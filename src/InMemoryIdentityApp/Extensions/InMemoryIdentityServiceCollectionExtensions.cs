@@ -30,31 +30,6 @@ namespace InMemoryIdentityApp.Extensions
             Action<IdentityOptions> setupAction)
             where TUser : class
         {
-            services.ConfigureApplicationCookie(o =>
-            {
-                o.Events = new CookieAuthenticationEvents()
-                {
-                    OnRedirectToLogin = (ctx) =>
-                    {
-                        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == (int)HttpStatusCode.OK)
-                        {
-                            ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                        }
-
-                        return Task.CompletedTask;
-                    },
-                    OnRedirectToAccessDenied = (ctx) =>
-                    {
-                        if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == (int)HttpStatusCode.OK)
-                        {
-                            ctx.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                        }
-
-                        return Task.CompletedTask;
-                    }
-                };
-            });
-
             // Services used by identity
             var authenticationBuilder = services.AddAuthentication(options =>
             {
