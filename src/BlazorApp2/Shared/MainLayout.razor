@@ -1,0 +1,58 @@
+﻿@inherits LayoutComponentBase
+@inject Services.FetchAuthStatusService AuthStatusService
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@using BazorAuth.Shared
+@using BlazorPro.Spinkit
+
+<SpinLoader IsLoading="@(string.IsNullOrWhiteSpace(displayName))" IsFaulted="hasError" Size="46px" Color="#3498db" Center="true" >
+    <LoadingTemplate>
+        <tr>
+            <td colspan="4" style="vertical-align: middle;background-color: white; height:300px;">
+                <Flow  Color="#e67e22" Size="60px" Center="true" />
+            </td>
+        </tr>
+    </LoadingTemplate>
+    <ContentTemplate>
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+
+        <div class="main">
+            <div class="top-row px-4">
+                <LoginDisplay />
+                <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+            </div>
+
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+    </ContentTemplate>
+    <FaultedContentTemplate>
+        <tr>
+            <td colspan="4">
+                <div class="alert alert-danger">Fail</div>
+            </td>
+        </tr>
+    </FaultedContentTemplate>
+</SpinLoader>
+@code { 
+    
+    private bool hasError = false;
+    private string displayName;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            displayName = await AuthStatusService.GetUserDisplayNameStatus();
+            await sessionStorage.SetItemAsync("displayName", displayName);
+            displayName = await sessionStorage.GetItemAsync<string>("displayName");
+            this.StateHasChanged();
+
+        }
+        catch (Exception)
+        {
+            hasError = true;
+        }
+    }
+}

@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using BlazorApp2.Services
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject NavigationManager Navigation
+@inject AccountHelper accountHelper
+
+<a>Hello, @displayName!</a>
+<button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
+
+@code{
+    private string displayName;
+    protected override async Task OnInitializedAsync()
+    {
+        displayName = await sessionStorage.GetItemAsync<string>("displayName");
+    }
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        accountHelper.SignOut();
+    }
+}
