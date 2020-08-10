@@ -27,6 +27,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BazorAuth.Shared\BazorAuth.Shared.csproj" />
     <ProjectReference Include="..\BlazorApp2\BlazorApp2.csproj" />
+    <ProjectReference Include="..\ExceptionApis\ExceptionApis.csproj" />
     <ProjectReference Include="..\Identity.Contrib.InMemoryStore\Identity.Contrib.InMemoryStore.csproj" />
     <ProjectReference Include="..\Serilog.Enricher.CorrelationId\Serilog.Enrichers.csproj" />
   </ItemGroup>

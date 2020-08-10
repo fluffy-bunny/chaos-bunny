@@ -22,6 +22,7 @@ using CorrelationId;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ExceptionApis;
 
 namespace InMemoryIdentityApp
 {
@@ -48,6 +49,7 @@ namespace InMemoryIdentityApp
         {
             try
             {
+                services.AddExceptionServices();
                 services.AddDefaultCorrelationId();
                 services.AddEnrichers();
                 services.Configure<CookiePolicyOptions>(options =>

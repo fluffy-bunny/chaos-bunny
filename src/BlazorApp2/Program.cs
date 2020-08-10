@@ -38,6 +38,8 @@ namespace BlazorApp2
                 .AddHttpMessageHandler<AuthorizedHandler>();
             builder.Services.AddTransient<FetchWeatherForecastService>();
             builder.Services.AddTransient<FetchAuthStatusService>();
+            builder.Services.AddTransient<FetchExceptionsService>();
+            
             builder.RootComponents.Add<App>("app");
 
 

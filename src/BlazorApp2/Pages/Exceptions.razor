@@ -1,0 +1,25 @@
+﻿@page "/exceptions"
+@inject Services.FetchExceptionsService FetchExceptionsService
+@using BazorAuth.Shared
+
+<h1>Exceptions</h1>
+
+
+<select @bind="selectedExceptionType">
+    @foreach (ExceptionType et in (ExceptionType[])Enum.GetValues(typeof(ExceptionType)))
+    {
+        <option value="@et">@et</option>
+    }
+</select>
+<br />
+<p>Exception: @selectedExceptionType</p>
+<button class="btn btn-success" @onclick="SubmitException">SubmitException</button>
+
+
+@code {
+    ExceptionType selectedExceptionType;
+    protected async Task SubmitException()
+    {
+        await FetchExceptionsService.ProduceException(selectedExceptionType);
+    }
+}
