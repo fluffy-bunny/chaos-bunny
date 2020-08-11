@@ -1,0 +1,57 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+    BuildNumber: $(date +%s)
+    AppName: chaosbunny
+    ResourceGroup: chaosbunny
+jobs:
+ 
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Dump Github Environment Variables
+      id: buildnumber
+      run: |
+        echo 'HOME':${{ env.HOME}}
+        echo 'GITHUB_RUN_ID':${{ env.GITHUB_RUN_ID}}
+        echo 'GITHUB_RUN_NUMBER':${{ env.GITHUB_RUN_NUMBER}}
+        echo "::set-output name=build_number::$(date +%s)"
+    
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v2
+
+    - name: 'az login'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: 'Build Image'
+      run: |
+        echo 'BuildNumber':${{ steps.buildnumber.outputs.build_number }}
+        cd src
+        docker build . --file Dockerfile                        --tag ${{ env.AppName }}/build
+        docker build . --file ./InMemoryIdentityApp/Dockerfile  --tag ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AppName }}/app:${{ steps.buildnumber.outputs.build_number }}
+        docker tag ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AppName }}/app:${{ steps.buildnumber.outputs.build_number }}    ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AppName }}/app:latest
+        docker images ${{ env.AppName }}
+        docker images
+
+    - name: 'az docker login'
+      run: |
+        az acr login --name ${{ secrets.REGISTRY_NAME }}
+
+    - name: 'Push image'
+      run: |
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AppName }}/app:${{ steps.buildnumber.outputs.build_number }}
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AppName }}/app:latest
+
+    - name: 'Update Webapp Container Image'
+      run: |
+          az webapp config container set -n app-${{ env.AppName }} -g rg-${{ env.ResourceGroup }} -c ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.AppName }}/app:${{ steps.buildnumber.outputs.build_number }}
