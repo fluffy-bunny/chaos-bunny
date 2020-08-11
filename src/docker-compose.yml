@@ -2,7 +2,7 @@
 version: '3.4'
 
 services:
-  fluffybunny4:
+  chaosbunny:
     image: chaosbunny/app:latest
      
     volumes:
