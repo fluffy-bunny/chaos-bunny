@@ -151,7 +151,7 @@ namespace InMemoryIdentityApp
                     return false;
                 return true;
             }, config => {
-
+                config.UseHttpsRedirection();
                 config.UseStaticFiles();
                 config.UseCorrelationId();
                 config.UseCookiePolicy();
@@ -171,6 +171,7 @@ namespace InMemoryIdentityApp
                 return ctx.Request.Path.StartsWithSegments("/BlazorApp1");
             }, config => {
 
+                config.UseHttpsRedirection(); 
                 config.UseBlazorFrameworkFiles("/BlazorApp1");
                 config.UseStaticFiles();
                 config.UseCorrelationId();
@@ -193,6 +194,7 @@ namespace InMemoryIdentityApp
                 return ctx.Request.Path.StartsWithSegments("/BlazorApp2");
             }, config => {
 
+                config.UseHttpsRedirection(); 
                 config.UseBlazorFrameworkFiles("/BlazorApp2");
                 config.UseStaticFiles();
                 config.UseCorrelationId();

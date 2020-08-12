@@ -31,12 +31,12 @@ These env variables have to be set to run the DOCKER app.  There are no Secrets.
 .\build.ps1
 
 $env:ApplicationInsights_InstrumentationKey='<secret>'
-$env:oidc_1_clientId='62cb1f99-3dce-4d29-a1c6-1e90f5de4ae4'
-$env:oidc_1_clientSecret='<secret>'
-$env:oidc_1_authority='https://login.microsoftonline.com/<secret>/v2.0/'
-$env:oidc_2_clientId='<secret>.apps.googleusercontent.com'
-$env:oidc_2_clientSecret='<secret>'
-$env:oidc_2_authority='https://accounts.google.com/'
+$env:oidc__1__clientId='62cb1f99-3dce-4d29-a1c6-1e90f5de4ae4'
+$env:oidc__1__clientSecret='<secret>'
+$env:oidc__1__authority='https://login.microsoftonline.com/<secret>/v2.0/'
+$env:oidc__2__clientId='<secret>.apps.googleusercontent.com'
+$env:oidc__2__clientSecret='<secret>'
+$env:oidc__2__authority='https://accounts.google.com/'
 
  .\run-docker-compose.ps1
  ```
