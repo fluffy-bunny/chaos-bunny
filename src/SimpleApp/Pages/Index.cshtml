@@ -26,3 +26,22 @@
     </tr>
 
 </table>
+
+<p>Headers</p>
+<table class="table">
+    <tr>
+        <th>Key</th>
+        <th>Value</th>
+    </tr>
+    @{
+        foreach (var header in Request.Headers)
+        {
+            <tr>
+                <td>@header.Key</td>
+                <td>@header.Value</td>
+            </tr>
+
+        }
+    }
+
+</table>

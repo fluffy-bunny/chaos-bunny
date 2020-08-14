@@ -130,7 +130,11 @@ namespace InMemoryIdentityApp
                 _logger.LogError(_deferedException.Message);
                 throw _deferedException;
             }
-
+            app.Use(async (context, next) =>
+            {
+                context.Request.Scheme = "https";
+                await next();
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
