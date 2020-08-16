@@ -1,4 +1,5 @@
 ﻿using BazorAuth.Shared;
+using ClientSideAuth;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -9,9 +10,9 @@ namespace BlazorApp2.Services
     public class FetchExceptionsService
     {
         private readonly HttpClient _httpClient;
-        public FetchExceptionsService(IHttpClientFactory clientFactory)
+        public FetchExceptionsService(IHostHttpClient hostHttpClient)
         {
-            _httpClient = clientFactory.CreateClient("authorizedClient");
+            _httpClient = hostHttpClient.CreateHttpClient();
         }
 
         public async Task ProduceException(ExceptionType et)

@@ -1,4 +1,5 @@
 ﻿using BazorAuth.Shared;
+using ClientSideAuth;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -9,9 +10,9 @@ namespace BlazorApp2.Services
     public class FetchAuthStatusService
     {
         private readonly HttpClient _httpClient;
-        public FetchAuthStatusService(IHttpClientFactory clientFactory)
+        public FetchAuthStatusService(IHostHttpClient hostHttpClient)
         {
-            _httpClient = clientFactory.CreateClient("authorizedClient");
+            _httpClient = hostHttpClient.CreateHttpClient();
         }
 
         public async Task<string> GetUserDisplayNameStatus()

@@ -8,9 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Components.Authorization;
 using BlazorApp2.Services;
 using Blazored.SessionStorage;
+using ClientSideAuth.Extensions;
 
 namespace BlazorApp2
 {
@@ -23,19 +23,7 @@ namespace BlazorApp2
                     config.JsonSerializerOptions.WriteIndented = true);
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
-            builder.Services.AddTransient<AccountHelper>();
-            builder.Services.AddTransient<AuthorizedHandler>();
-            
-
-            builder.Services.AddHttpClient("authorizedClient",
-              client => {
-                  var baseAddress = builder.HostEnvironment.BaseAddress;
-                  var uri = new Uri(baseAddress);
-                  baseAddress = $"{uri.Scheme}://{uri.Authority}";
-                  client.BaseAddress = new Uri(baseAddress);
-
-                  })
-                .AddHttpMessageHandler<AuthorizedHandler>();
+            builder.AddClientSideAuth();
             builder.Services.AddTransient<FetchWeatherForecastService>();
             builder.Services.AddTransient<FetchAuthStatusService>();
             builder.Services.AddTransient<FetchExceptionsService>();

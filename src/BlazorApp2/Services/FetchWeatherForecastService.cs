@@ -1,4 +1,5 @@
 ﻿using BazorAuth.Shared;
+using ClientSideAuth;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Net.Http;
@@ -10,9 +11,9 @@ namespace BlazorApp2.Services
     public class FetchWeatherForecastService
     {
         private readonly HttpClient _httpClient;
-        public FetchWeatherForecastService(IHttpClientFactory clientFactory)
+        public FetchWeatherForecastService(IHostHttpClient hostHttpClient)
         {
-            _httpClient = clientFactory.CreateClient("authorizedClient");
+            _httpClient = hostHttpClient.CreateHttpClient();
         }
 
         public async Task<WeatherForecast[]> GetPublicWeatherForeacast()
